@@ -51,7 +51,7 @@ def BFS(x, y):
     visited = [[False for j in range(c + 1)] for i in range(r + 1)]
     # visited[x][y] = True
     steps[1][1] = 1
-    steps[r][c] = -1
+    # steps[r][c] = -1
     queue.append((x, y))
     while queue:
         print("Queue:", queue)
@@ -95,9 +95,9 @@ while tests > 0:  # for each test case ...
         # print(grid[i])
     # grid has been inputted
 
-    if grid[r - 1][c - 1] == '*':
-        steps[r][c] = -1
-        continue
+    # if grid[r - 1][c - 1] == '*':
+    #     steps[r][c] = -1
+    #     continue
 
     steps = [[INF for j in range(c + 2)] for i in
              range(r + 2)]  # initializes #ofsteps grid to INF based on rows and cols (natural indexed)
