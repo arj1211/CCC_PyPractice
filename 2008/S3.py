@@ -1,30 +1,5 @@
 import sys
 
-'''
-Sample Input
-
-3
-2
-2
--|
-*+
-3
-5
-+||*+
-+++|+
-**--+
-2
-3
-+*+
-+*+
-
-Sample Output
-
-3
-7
--1
-'''
-
 
 # def addup(x, y):
 #     top, bottom, left, right = INF, INF, INF, INF
@@ -39,11 +14,6 @@ Sample Output
 #
 #     return top, bottom, left, right
 
-def steps_to_get_to_point(x, y):
-    x = x - 1
-    y = y - 1
-    if grid[x - 1][y - 1] == '*':
-        return INF
 
 
 def BFS(x, y):
@@ -54,26 +24,46 @@ def BFS(x, y):
     # steps[r][c] = -1
     queue.append((x, y))
     while queue:
-        print("Queue:", queue)
+        # print("Queue:", queue)
         current = queue.pop(0)
-        print("just dequeued:", current)
+        # print("just popped:", current)
+        a, b = current[0], current[1]
         if current != (1, 1):
-            steps[current[0]][current[1]] = 1 + min(steps[current[0] - 1][current[1]],
-                                                    steps[current[0] + 1][current[1]],
-                                                    steps[current[0]][current[1] - 1],
-                                                    steps[current[0]][current[1] + 1])
-        print("Steps to get to", current, ":", steps[current[0]][current[1]])
+            steps[a][b] = 1 + min(steps[a - 1][b],
+                                  steps[a + 1][b],
+                                  steps[a][b - 1],
+                                  steps[a][b + 1])
+        # print("Steps to get to", current, ":", steps[a][b])
+        if current == (r, c):
+            return
         # go to adjacent nodes
-        if not visited[current[0]][current[1]]:
-            visited[current[0]][current[1]] = True
-            if (current[0] - 1) >= 1 and not visited[current[0] - 1][current[1]]:
-                queue.append((current[0] - 1, current[1]))
-            if (current[0] + 1) <= r and not visited[current[0] + 1][current[1]]:
-                queue.append((current[0] + 1, current[1]))
-            if (current[1] - 1) >= 1 and not visited[current[0]][current[1] - 1]:
-                queue.append((current[0], current[1] - 1))
-            if (current[1] + 1) <= c and not visited[current[0]][current[1] + 1]:
-                queue.append((current[0], current[1] + 1))
+        if not visited[a][b]:
+            visited[a][b] = True
+            ga, gb = a - 1, b - 1
+            if (a - 1) >= 1 and \
+                    not visited[a - 1][b] and \
+                            grid[ga - 1][gb] != '*' and \
+                    (grid[ga][gb] == '+' or \
+                                 grid[ga][gb] == '|'):
+                queue.append((a - 1, b))
+            if (a + 1) <= r and \
+                    not visited[a + 1][b] and \
+                            grid[ga + 1][gb] != '*' and \
+                    (grid[ga][gb] == '+' or \
+                                 grid[ga][gb] == '|'):
+                queue.append((a + 1, b))
+            if (b - 1) >= 1 and \
+                    not visited[a][b - 1] and \
+                            grid[ga][gb - 1] != '*' and \
+                    (grid[ga][gb] == '+' or \
+                                 grid[ga][gb] == '-'):
+                queue.append((a, b - 1))
+            if (b + 1) <= c and \
+                    not visited[a][b + 1] and \
+                            grid[ga][gb + 1] != '*' and \
+                    (grid[ga][gb] == '+' or \
+                                 grid[ga][gb] == '-'):
+                queue.append((a, b + 1))
 
 
 INF = sys.maxsize
@@ -95,14 +85,17 @@ while tests > 0:  # for each test case ...
         # print(grid[i])
     # grid has been inputted
 
-    # if grid[r - 1][c - 1] == '*':
-    #     steps[r][c] = -1
-    #     continue
+    if grid[r - 1][c - 1] == '*':
+        steps[r][c] = -1
+        continue
 
     steps = [[INF for j in range(c + 2)] for i in
              range(r + 2)]  # initializes #ofsteps grid to INF based on rows and cols (natural indexed)
 
     BFS(1, 1)
 
-    print(steps[r][c])
+    if (steps[r][c] == INF):
+        print(-1)
+    else:
+        print(steps[r][c])
     tests -= 1
