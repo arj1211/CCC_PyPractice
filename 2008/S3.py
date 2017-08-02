@@ -1,5 +1,30 @@
 import sys
 
+'''
+Sample Input
+
+3
+2
+2
+-|
+*+
+3
+5
++||*+
++++|+
+**--+
+2
+3
++*+
++*+
+
+Sample Output
+
+3
+7
+-1
+'''
+
 
 # def addup(x, y):
 #     top, bottom, left, right = INF, INF, INF, INF
@@ -31,7 +56,7 @@ def BFS(x, y):
     while queue:
         print("Queue:", queue)
         current = queue.pop(0)
-        print("just popped:", current)
+        print("just dequeued:", current)
         if current != (1, 1):
             steps[current[0]][current[1]] = 1 + min(steps[current[0] - 1][current[1]],
                                                     steps[current[0] + 1][current[1]],
